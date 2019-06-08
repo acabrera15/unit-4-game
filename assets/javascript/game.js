@@ -22,3 +22,4 @@ var darth_maul = {
     attackPower: 0,
     counterAttackPower: 0
 }
+
