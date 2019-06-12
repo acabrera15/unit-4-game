@@ -24,22 +24,29 @@ var darth_maul = {
 };
 
 $(document).ready(function() {
-  var initialCharSelected = false;
+  var initialCharSelected = false; //if character is selected
+  var currentCharDiv;
 
+  //do something if a card is clicked
   $(".card").on("click", function(e) {
-    var cardArr = $(".card");
-
+    var cardArr = $(".card"); //array of the different cards
+    //cheks if character isnt selected
     if (!initialCharSelected) {
-      $("#" + e.currentTarget.id).appendTo(".yourChar");
+      currentCharDiv = e.currentTarget.id; //hold current character
+
+      $("#" + currentCharDiv).appendTo(".yourChar");
       initialCharSelected = true;
-        var counter = 1;
+      var counter = 1;
       for (var i = 0; i < cardArr.length; i++) {
         console.log(cardArr[i].id);
         if (e.currentTarget.id != cardArr[i].id) {
-            $('#' + cardArr[i].id).appendTo('#attack' + counter.toString());
-            counter++;
+          $("#" + cardArr[i].id).appendTo("#attack" + counter.toString());
+          counter++;
         }
       }
+    } else if (e.currentTarget.id != currentCharDiv) {
+      alert("okay");
+      $('#' + e.currentTarget.id).appendTo('#defenderSection');
     }
   });
 });
