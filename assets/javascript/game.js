@@ -1,31 +1,40 @@
 var obi_wan_kenobi = {
-  healthPoints: 0,
-  attackPower: 0,
-  counterAttackPower: 0,
+  healthPoints: 120,
+  attackPower: 8,
+  counterAttackPower: 10,
   imgAddress: "../images/obiWan"
 };
 
-var luke_skywalker = {
-  healthPoints: 0,
-  attackPower: 0,
-  counterAttackPower: 0
+var lukeSkywalker = {
+  healthPoints: 180,
+  attackPower: 8,
+  counterAttackPower: 5
 };
 
-var darth_sidous = {
-  healthPoints: 0,
-  attackPower: 0,
-  counterAttackPower: 0
+var darthSidious = {
+  healthPoints: 150,
+  attackPower: 8,
+  counterAttackPower: 20
 };
 
-var darth_maul = {
-  healthPoints: 0,
-  attackPower: 0,
-  counterAttackPower: 0
+var darthMaul = {
+  healthPoints: 180,
+  attackPower: 10,
+  counterAttackPower: 25
+};
+
+var setHealthOnDisplay = function() {
+  $("#obi_wan_kenobiHealthPoints").text(obi_wan_kenobi.healthPoints);
+  $("#lukeSkywalkerHealthPoints").text(lukeSkywalker.healthPoints);
+  $("#darthSidiousHealthPoints").text(darthSidious.healthPoints);
+  $("#darthMaulHealthPoints").text(darthMaul.healthPoints);
 };
 
 $(document).ready(function() {
   var initialCharSelected = false; //if character is selected
   var currentCharDiv;
+
+  setHealthOnDisplay();
 
   //do something if a card is clicked
   $(".card").on("click", function(e) {
@@ -45,8 +54,7 @@ $(document).ready(function() {
         }
       }
     } else if (e.currentTarget.id != currentCharDiv) {
-      alert("okay");
-      $('#' + e.currentTarget.id).appendTo('#defenderSection');
+      $("#" + e.currentTarget.id).appendTo("#defenderSection");
     }
   });
 });
