@@ -2,11 +2,11 @@ var obi_wan_kenobi = {
   healthPoints: 120,
   attackPower: 8,
   counterAttackPower: 10,
-  name: "obi_wan_kenobi",
+  name: "obi_wan_kenobi"
 };
 
 var lukeSkywalker = {
-  healthPoints: 180,
+  healthPoints: 100,
   attackPower: 8,
   counterAttackPower: 5,
   name: "lukeSkywalker"
@@ -34,6 +34,7 @@ var setHealthOnDisplay = function() {
   $("#darthMaulHealthPoints").text(darthMaul.healthPoints);
 };
 
+//returns an object of the same name as an ID entered
 var setObjectVarFromId = function(id) {
   if (id === obi_wan_kenobi.name) {
     return obi_wan_kenobi;
@@ -48,12 +49,19 @@ var setObjectVarFromId = function(id) {
   }
 };
 
+//resets the game to initial values and look
+var resetGame = function() {
+  window.location.reload();
+};
+
 $(document).ready(function() {
   var initialCharSelected = false; //if character is selected
   var currentCharDiv;
   var characterChosen;
   var characterToFight;
   var attackPowerHolder = 0;
+  var noOneToAttack = true;
+  var enemiesDefeatedCount = 0;
 
   setHealthOnDisplay();
 
@@ -80,29 +88,60 @@ $(document).ready(function() {
     } else if (e.currentTarget.id != currentCharDiv) {
       $("#" + e.currentTarget.id).appendTo("#defenderSection");
       characterToFight = setObjectVarFromId(e.currentTarget.id);
+      noOneToAttack = false;
     }
   });
 
   $("#attackButton").on("click", function() {
-    if (initialCharSelected && characterToFight !== undefined) {
+    if (!noOneToAttack) {
+      if (initialCharSelected && characterToFight !== undefined) {
+        $("#youAttackP").text(
+          `You attacked ${characterToFight.name} for ${
+            characterChosen.attackPower
+          } damage`
+        );
 
-      $("#youAttackP").text(
-        `You attacked ${characterToFight.name} for ${
-          characterChosen.attackPower
-        } damage`
-      );
+        $("#defenderAttackedP").text(
+          `${characterToFight.name} attacked you back for ${
+            characterToFight.counterAttackPower
+          } damage`
+        );
+        characterToFight.healthPoints -= characterChosen.attackPower;
+        if (characterToFight.healthPoints <= 0) {
+          enemiesDefeatedCount++;
+          console.log(enemiesDefeatedCount);
+          if (enemiesDefeatedCount === 3) {
+            $("#youAttackP").text("You have Won!!");
+            $("#defenderAttackedP").text("GAME OVER!!!!");
 
-      $("#defenderAttackedP").text(
-        `${characterToFight.name} attacked you back for ${
-          characterToFight.counterAttackPower
-        } damage`
-      );
-
-      characterChosen.healthPoints -= characterToFight.counterAttackPower;
-      characterToFight.healthPoints -= characterChosen.attackPower;
-      characterChosen.attackPower += attackPowerHolder;
+            $("#defenderAttackedP").html(
+              '<button type="button" class="btn btn-danger rounded-pill" id="resetButton">RESET</button>'
+            );
+            $("#resetButton").on("click", resetGame);
+          } else {
+            $("#youAttackP").text(`You have defeated ${characterToFight.name}`);
+            $("#defenderAttackedP").text(
+              "You can choose another character to fight."
+            );
+            $("#defenderSection").empty();
+            noOneToAttack = true;
+            characterChosen.attackPower += attackPowerHolder;
+          }
+        } else {
+          characterChosen.healthPoints -= characterToFight.counterAttackPower;
+          characterChosen.attackPower += attackPowerHolder;
+        }
+      }
 
       setHealthOnDisplay();
+
+      if (characterChosen.healthPoints <= 0) {
+        $("#youAttackP").text("You have been defeated");
+        $("#defenderAttackedP").html(
+          '<button type="button" class="btn btn-danger rounded-pill" id="resetButton">RESET</button>'
+        );
+        $("#resetButton").on("click", resetGame);
+      }
     }
   });
 });
