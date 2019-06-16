@@ -1,9 +1,13 @@
+
+
 body {
     background-image: url('../images/starWarsBackground.jpg');
     background-repeat: repeat-y;
     background-size: cover;
     height: 100%;
     width: 100%;
+    font-family: "'Teko', sans-serif";
+    font-size: 30px;
 }
 
 img {
