@@ -7,7 +7,7 @@ var obi_wan_kenobi = {
 
 var lukeSkywalker = {
   healthPoints: 100,
-  attackPower: 8,
+  attackPower: 12,
   counterAttackPower: 5,
   name: "lukeSkywalker"
 };
@@ -85,7 +85,9 @@ $(document).ready(function() {
           counter++;
         }
       }
-    } else if (e.currentTarget.id != currentCharDiv) {
+
+
+    } else if (e.currentTarget.id != currentCharDiv && noOneToAttack) {
       $("#" + e.currentTarget.id).appendTo("#defenderSection");
       characterToFight = setObjectVarFromId(e.currentTarget.id);
       noOneToAttack = false;
